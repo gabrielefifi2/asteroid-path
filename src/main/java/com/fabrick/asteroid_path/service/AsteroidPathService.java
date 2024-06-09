@@ -7,6 +7,7 @@ import com.fabrick.asteroid_path.model.NasaNeoLookupData;
 import com.fabrick.asteroid_path.service.external.NasaNeoLookupService;
 import com.google.gson.Gson;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -30,6 +31,7 @@ public class AsteroidPathService {
         return findAsteroidPaths(nasaNeoLookupData.getApproachDataList(), fromDate, toDate);
     }
 
+    @Cacheable("nasaNeoLookupData")
     private NasaNeoLookupData callNasaNeoLookupService(int asteroidId) {
         String neoLookupResponse = nasaNeoLookupService.getAsteroidData(asteroidId);
         return new Gson().fromJson(neoLookupResponse, NasaNeoLookupData.class);
