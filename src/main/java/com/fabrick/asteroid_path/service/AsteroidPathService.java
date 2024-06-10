@@ -24,11 +24,23 @@ public class AsteroidPathService {
         this.nasaNeoLookupService = nasaNeoLookupService;
     }
 
-    public AsteroidPathResponse findAsteroidPath(int asteroidId, LocalDate fromDate, LocalDate toDate) {
+    public AsteroidPathResponse findAsteroidPath(int asteroidId, String fromDate, String toDate) {
+
+        validateInput(asteroidId, fromDate, toDate);
 
         NasaNeoLookupData nasaNeoLookupData = callNasaNeoLookupService(asteroidId);
 
-        return findAsteroidPaths(nasaNeoLookupData.getApproachDataList(), fromDate, toDate);
+        return findAsteroidPaths(nasaNeoLookupData.getApproachDataList(), LocalDate.parse(fromDate), LocalDate.parse(toDate));
+    }
+
+    private void validateInput(int asteroidId, String fromDate, String toDate) {
+        if (asteroidId <= 0) {
+            throw new IllegalArgumentException("Invalid asteroid ID: " + asteroidId);
+        }
+
+        if (LocalDate.parse(fromDate).isAfter(LocalDate.parse(toDate))) {
+            throw new IllegalArgumentException("Date " + fromDate + " is after " + toDate);
+        }
     }
 
     @Cacheable("nasaNeoLookupData")
