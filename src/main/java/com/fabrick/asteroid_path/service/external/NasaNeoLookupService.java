@@ -14,8 +14,8 @@ public class NasaNeoLookupService {
 
     @Autowired
     public NasaNeoLookupService(RestTemplate restTemplate,
-                                @Value("${nasa.neo.lookup.api.base-url}") String baseUrl,
-                                @Value("${nasa.neo.lookup.api.api-key}") String apiKey) {
+                                @Value("${nasa.neo-lookup.api.base-url}") String baseUrl,
+                                @Value("${nasa.neo-lookup.api.api-key}") String apiKey) {
         this.restTemplate = restTemplate;
         this.baseUrl = baseUrl;
         this.apiKey = apiKey;

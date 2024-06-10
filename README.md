@@ -40,8 +40,8 @@ This project fetches data from NASA's NeoWs API to provide information about ast
 2. [Optional] Update the `application.properties` file with your NASA API key:
 
     ```properties
-    nasa.neo.lookup.api.base-url=https://api.nasa.gov/neo/rest/v1/neo
-    nasa.neo.lookup.api.api-key=YOUR_NASA_API_KEY
+    nasa.neo-lookup.api.base-url=https://api.nasa.gov/neo/rest/v1/neo
+    nasa.neo-lookup.api.api-key=YOUR_NASA_API_KEY
     ```
 
 3. Build the project with Maven:
