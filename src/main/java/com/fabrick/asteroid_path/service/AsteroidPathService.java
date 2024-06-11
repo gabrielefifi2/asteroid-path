@@ -2,7 +2,6 @@ package com.fabrick.asteroid_path.service;
 
 import com.fabrick.asteroid_path.model.ApproachData;
 import com.fabrick.asteroid_path.model.AsteroidPath;
-import com.fabrick.asteroid_path.model.AsteroidPathResponse;
 import com.fabrick.asteroid_path.model.NasaNeoLookupData;
 import com.fabrick.asteroid_path.service.external.NasaNeoLookupService;
 import com.google.gson.Gson;
@@ -11,6 +10,7 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
@@ -24,7 +24,7 @@ public class AsteroidPathService {
         this.nasaNeoLookupService = nasaNeoLookupService;
     }
 
-    public AsteroidPathResponse findAsteroidPath(int asteroidId, String fromDate, String toDate) {
+    public List<AsteroidPath> findAsteroidPath(int asteroidId, String fromDate, String toDate) {
 
         validateInput(asteroidId, fromDate, toDate);
 
@@ -49,8 +49,8 @@ public class AsteroidPathService {
         return new Gson().fromJson(neoLookupResponse, NasaNeoLookupData.class);
     }
 
-    private AsteroidPathResponse findAsteroidPaths(List<ApproachData> approachDataList, LocalDate fromDate, LocalDate toDate) {
-        AsteroidPathResponse asteroidPathResponse = new AsteroidPathResponse();
+    private List<AsteroidPath> findAsteroidPaths(List<ApproachData> approachDataList, LocalDate fromDate, LocalDate toDate) {
+        List<AsteroidPath> asteroidPathList = new ArrayList<>();
         approachDataList.sort(Comparator.comparing(a -> LocalDate.parse(a.getCloseApproachDate())));
 
         String currentPlanet = null;
@@ -63,12 +63,12 @@ public class AsteroidPathService {
             if (currentPlanet != null && !currentPlanet.equals(orbitingBody)) {
                 if ( (currentDate.isAfter(fromDate) || currentDate.isEqual(fromDate)) &&
                         (closeApproachDate.isBefore(toDate) || closeApproachDate.isEqual(toDate)) ) {
-                    asteroidPathResponse.getAsteroidPathList().add(new AsteroidPath(currentPlanet, orbitingBody, currentDate, closeApproachDate));
+                    asteroidPathList.add(new AsteroidPath(currentPlanet, orbitingBody, currentDate, closeApproachDate));
                 }
             }
             currentPlanet = orbitingBody;
             currentDate = closeApproachDate;
         }
-        return asteroidPathResponse;
+        return asteroidPathList;
     }
 }

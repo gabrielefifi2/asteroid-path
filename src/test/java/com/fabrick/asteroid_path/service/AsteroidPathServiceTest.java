@@ -1,11 +1,12 @@
 package com.fabrick.asteroid_path.service;
 
-import com.fabrick.asteroid_path.model.AsteroidPathResponse;
+import com.fabrick.asteroid_path.model.AsteroidPath;
 import com.fabrick.asteroid_path.service.external.NasaNeoLookupService;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
+import java.util.List;
 
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.mock;
@@ -20,9 +21,9 @@ public class AsteroidPathServiceTest {
     @Test
     public void asteroidPathServiceOKTest() {
         when(nasaNeoLookupService.getAsteroidData(anyInt())).thenReturn(getNasaNeoLookupResponse());
-        AsteroidPathResponse asteroidPathResponse =
+        List<AsteroidPath> asteroidPathList =
                 asteroidPathService.findAsteroidPath(3542519, "1900-01-01", LocalDate.now().toString());
-        assert(!asteroidPathResponse.getAsteroidPathList().isEmpty());
+        assert(!asteroidPathList.isEmpty());
     }
 
     @Test
