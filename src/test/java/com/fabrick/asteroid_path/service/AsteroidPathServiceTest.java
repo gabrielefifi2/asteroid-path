@@ -8,10 +8,10 @@ import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class AsteroidPathServiceTest {
 
@@ -23,7 +23,7 @@ public class AsteroidPathServiceTest {
         when(nasaNeoLookupService.getAsteroidData(anyInt())).thenReturn(getNasaNeoLookupResponse());
         List<AsteroidPath> asteroidPathList =
                 asteroidPathService.findAsteroidPath(3542519, "1900-01-01", LocalDate.now().toString());
-        assert(!asteroidPathList.isEmpty());
+        assertFalse(asteroidPathList.isEmpty());
     }
 
     @Test
